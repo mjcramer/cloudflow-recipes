@@ -18,7 +18,13 @@
             }
          },
          {
-            "name": "measurements", "type": "sensordata.Measurements"
+            "name": "status",
+            "type": "string",
+            "default": "READY"
+         },
+         {
+            "name": "measurements",
+            "type": "sensordata.Measurements"
          }
     ]
 }

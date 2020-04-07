@@ -27,11 +27,14 @@ class SensorDataToMetrics extends AkkaStreamlet {
   val shape = StreamletShape(in, out)
   def flow =
     FlowWithCommittableContext[SensorData]
+      .filter { data =>
+        data.status == "READY"
+      }
       .mapConcat { data ⇒
         List(
-          Metric(data.deviceId, data.timestamp, "power", data.measurements.power),
-          Metric(data.deviceId, data.timestamp, "rotorSpeed", data.measurements.rotorSpeed),
-          Metric(data.deviceId, data.timestamp, "windSpeed", data.measurements.windSpeed)
+          Metric(data.deviceId, data.timestamp, data.status, "power", data.measurements.power),
+          Metric(data.deviceId, data.timestamp, data.status, "rotorSpeed", data.measurements.rotorSpeed),
+          Metric(data.deviceId, data.timestamp, data.status, "windSpeed", data.measurements.windSpeed)
         )
       }
   override def createLogic = new RunnableGraphStreamletLogic() {

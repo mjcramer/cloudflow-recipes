@@ -1,6 +1,24 @@
 # My Cloudflow Project
 
--- GENERAL DESCRIPTION HERE --
+
+
+```json
+         {
+            "name": "status",
+            "type": {
+                "name": "Status",
+                "type": "enum",
+                "symbols" : ["INIT", "READY", "SHUTDOWN", "ERROR"]
+            }
+         },
+```
+```json
+         {
+            "name": "status",
+            "type": "string"
+         },
+
+```
 
 To run from terminal:
 ```shell script
@@ -20,6 +38,25 @@ gcloud auth configure-docker
 
 - There was a problem with the repo not being a valid git repository
 - 
+
+- Had some issues starting up the initial deployment 
+```shell script
+kubectl cloudflow  deploy -u oauth2accesstoken --volume-mount file-ingress.source-data-mount=file-ingress.source-data-mount   eu.gcr.io/bubbly-observer-178213/sensor-data-scala:8-2a0f65d-dirty -p "$(gcloud auth print-access-token)" 
+```
+The following volume mount is now bound to Persistent Volume Claim `file-ingress.source-data-mount`:
+- file-ingress.source-data-mount
+Default value 'debug' will be used for configuration parameter 'valid-logger.log-level'
+Default value 'valid-logger' will be used for configuration parameter 'valid-logger.msg-prefix'
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+[Done] Deployment of application `sensor-data-scala` has started.
+
+kubectl deploy <docker-img> --volume-mount file-ingress.source-data-mount=file-ingress.source-data-mount
+
+
+Had to deploy the persistent volume claim from the templates directory
+
+
+
 ## `sensor-data-scala`
 
 ### Problem Definition
@@ -120,7 +157,7 @@ This command line tool can be used to deploy and operate Cloudflow applications.
 * Create the application namespace
 
 ```
-$ kubectl create ns sensor-data-scala
+$ kubectl create ns my-sensor-data
 ```
 
 Install the required PVC for the file ingress (This is optional as you can remove the file ingress from the blueprint
@@ -128,12 +165,7 @@ and use only the HTTP ingress for posting data.)
 
 * Install PVC on GKE
 ```
-kubectl apply -f templates/nfs.yaml -n sensor-data-scala
-```
-
-* Install PVC on EKS
-```
-kubectl apply -f templates/efs.yaml -n sensor-data-scala
+kubectl apply -f templates/nfs.yaml -n my-sensor-data
 ```
 
 * Deploy the app to a GKE cluster

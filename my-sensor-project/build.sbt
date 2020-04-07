@@ -10,7 +10,7 @@ lazy val root =  (project in file("."))
       "ch.qos.logback"         %  "logback-classic"           % "1.2.3",
       "com.typesafe.akka"      %% "akka-http-testkit"         % "10.1.11" % "test"
     ),
-    name := "my-cloudflow-project",
+    name := "my-sensor-project",
     organization := "com.example",
     scalaVersion := "2.12.10",
     crossScalaVersions := Vector(scalaVersion.value),
@@ -34,3 +34,15 @@ lazy val root =  (project in file("."))
 
 ThisBuild / cloudflowDockerRegistry := Some("us.gcr.io")
 ThisBuild / cloudflowDockerRepository := Some("cloudflow-1023b")
+
+
+lazy val cloudflowDockerImagePath = taskKey[Unit]("Output path of docker image")
+cloudflowDockerImagePath := {
+   IO.write(new File("./cloudflow-docker-image-path"),
+     cloudflowDockerRegistry.value.getOrElse("") +
+     "/" +
+     cloudflowDockerRepository.value.getOrElse("") +
+     "/" +
+     cloudflowDockerImageName.value.map(_.asTaggedName).getOrElse("")
+    )
+}
