@@ -18,7 +18,9 @@
             }
          },
          {
-            "name": "status", "type": "string"
+            "name": "status",
+            "type": "string",
+            "default": "READY"
          },
          {
             "name": "name", "type": "string"

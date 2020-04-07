@@ -19,7 +19,7 @@
          },
          {
             "name": "status",
-            "type": "string"
+            "type": "string",
             "default": "READY"
          },
          {
