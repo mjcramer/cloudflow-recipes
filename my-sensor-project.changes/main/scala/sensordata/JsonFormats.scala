@@ -51,5 +51,5 @@ object MeasurementsJsonSupport extends DefaultJsonProtocol {
 
 object SensorDataJsonSupport extends DefaultJsonProtocol with UUIDJsonSupport with InstantJsonSupport {
   import MeasurementsJsonSupport._
-  implicit val sensorDataFormat = jsonFormat3(SensorData.apply)
+  implicit val sensorDataFormat = jsonFormat4(SensorData.apply)
 }

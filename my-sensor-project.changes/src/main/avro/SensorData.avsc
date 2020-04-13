@@ -1,0 +1,30 @@
+{
+    "namespace": "sensordata",
+    "type": "record",
+    "name": "SensorData",
+    "fields":[
+         {
+            "name": "deviceId",
+            "type": {
+                "type": "string",
+                "logicalType": "uuid"
+            }
+         },
+         {
+            "name": "timestamp",
+            "type": {
+                "type": "long",
+                "logicalType": "timestamp-millis"
+            }
+         },
+         {
+            "name": "status",
+            "type": "string",
+            "default": "READY"
+         },
+         {
+            "name": "measurements",
+            "type": "sensordata.Measurements"
+         }
+    ]
+}
