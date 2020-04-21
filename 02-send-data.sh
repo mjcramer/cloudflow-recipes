@@ -12,12 +12,13 @@ size=${#data[@]}
 kubectl port-forward $(get_streamlet_pod my-sensor-project http-ingress) -n my-sensor-project 3000:3000 &
 PORT_FORWARD_PID=$!
 
-for i in {1..100}; do
+for i in {1..1000}; do
     index=$(($RANDOM % $size))
     for str in $(cat test-data/${data[$index]} | jq -c .); do
         echo "Sending $str"
         curl -i -X POST http://localhost:3000 -H "Content-Type: application/json" --data "$str"
     done
+    sleep 1
 done
 
 kill $PORT_FORWARD_PID

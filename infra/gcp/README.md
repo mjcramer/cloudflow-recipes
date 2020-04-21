@@ -2,39 +2,32 @@
 # Set up GCP
 
 
-Create service account
-Instructions for creating service accounts
+## Create a new project
+Instructions for creating new project
 
 ```bash
-export TF_VAR_org_id=YOUR_ORG_ID
-export TF_VAR_billing_account=YOUR_BILLING_ACCOUNT_ID
-export TF_VAR_project_id=YOUR_PROJECT_NAME
-export TF_VAR_gcp_credentials=FILE_TO_WRITE_CREDENTIALS
-export TF_VAR_gcp_bucket=YOUR_INFRASTRUCTUE_BUCKET
+export TF_VAR_project_id=cloudflow
+gcloud projects create $TF_VAR_project_id \
+  --set-as-default
 ```
 
-export TF_ADMIN=$TF_VAR_project_id}-terraform-admin
-export TF_CREDS=~/.config/gcloud/TF_VAR_project_id}-terraform-admin.json
-
-Create a new configuration for the gcloud tool
-
-```bash
-gcloud config configurations create cloudflow-operator
-```
-
-Create new project and link to proper billing account
+Alternatively, if you are creating this under an organization...
 
 ```bash
 gcloud projects create $TF_VAR_project_id \
-  --organization $TF_VAR_org_id \ # omit if you are creating this under a user account
+  --organization $TF_VAR_org_id \
   --set-as-default
+```
 
-gcloud projects create $TF_VAR_project_id \
-  --set-as-default
+Link the billing account...
 
+```bash
 gcloud beta billing projects link $TF_VAR_project_id \
   --billing-account $TF_VAR_billing_account
 ```
+
+## Create a service account
+Instructions for creating service accounts
 
 Create the terraform service account
 
@@ -66,7 +59,28 @@ gcloud projects add-iam-policy-binding $TF_VAR_project_id \
   --role roles/iam.serviceAccountUser
 ```
 
-Enable the API's for all the services we will be using
+
+## Generate credentials for service account
+
+
+```bash
+export TF_VAR_org_id=YOUR_ORG_ID
+export TF_VAR_billing_account=YOUR_BILLING_ACCOUNT_ID
+export TF_VAR_project_id=YOUR_PROJECT_NAME
+export TF_VAR_gcp_credentials=FILE_TO_WRITE_CREDENTIALS
+export TF_VAR_gcp_bucket=YOUR_INFRASTRUCTUE_BUCKET
+```
+
+
+## [OPTIONAL] Generate new configuration for gloud
+Create a new configuration for the gcloud tool
+
+```bash
+gcloud config configurations create cloudflow-operator
+```
+
+
+## Enable the API's for all the services we will be using
 
 ```bash
 gcloud services enable cloudresourcemanager.googleapis.com
